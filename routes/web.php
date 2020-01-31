@@ -15,6 +15,8 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/kamar','KamarController@index');
+$router->get('/kamar/{id}','KamarController@show');
 
 Route::group(['middleware' => ['auth']], function ($router){
 $router->get('/pelanggan','PelangganController@index');
@@ -23,8 +25,6 @@ $router->get('/pelanggan/{id}','PelangganController@show');
 $router->put('/pelanggan/{id}','PelangganController@update');
 $router->delete('/pelanggan/{id}','PelangganController@delete');
 
-$router->get('/kamar','KamarController@index');
-$router->get('/kamar/{id}','KamarController@show');
 $router->post('/kamar','KamarController@store');
 $router->put('/kamar/{id}','KamarController@update');
 $router->delete('/kamar/{id}','KamarController@delete');
