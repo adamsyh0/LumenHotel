@@ -78,7 +78,7 @@ class AuthServiceProvider extends ServiceProvider
         if ($users->role == 'admin') {
         return true;
         } else if ($users->role == 'user') {
-        return $pemesanan->id_pemesanan == $users->id;
+        return $pemesanan->id_pelanggan == $users->id;
         } else {
           return false;
         }
