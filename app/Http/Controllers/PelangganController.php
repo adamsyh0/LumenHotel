@@ -64,7 +64,7 @@ class PelangganController extends Controller
           'tanggal_lahir' => 'required|date',
           'jenis_kelamin' => 'required|in:laki-laki,perempuan',
           'alamat' => 'required|min:5',
-          'id_pelanggan' => 'required|unique:users,id'
+          'id_pelanggan' => 'required|min:1'
         ];
 
         $validator = \Validator::make($input, $validationRules);
