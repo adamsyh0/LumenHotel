@@ -158,7 +158,7 @@ class PelangganController extends Controller
         'no_hp' => 'required|min:11',
         'tanggal_lahir' => 'required|date',
         'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-        'alamat' => 'required|min:5',
+        'alamat' => 'required|min:5'
       ];
 
       $validator = \Validator::make($input, $validationRules);
