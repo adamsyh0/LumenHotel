@@ -121,20 +121,20 @@ class AuthServiceProvider extends ServiceProvider
           return false;
         }
         });
-        Gate::define('show-pemesanan', function ($users, $pelanggan) {
+        Gate::define('show-pemesanan', function ($users, $pemesanan) {
         if ($users->role == 'admin') {
         return true;
         } else if ($users->role == 'user') {
-        return $pelanggan->id_pelanggan == $users->id;
+        return $pemesanan->id_pelanggan == $users->id;
         } else {
           return false;
         }
         });
-        Gate::define('show-pembayaran', function ($users, $pelanggan) {
+        Gate::define('show-pembayaran', function ($users, $pembayaran) {
         if ($users->role == 'admin') {
         return true;
         } else if ($users->role == 'user') {
-        return $pelanggan->id_pelanggan == $users->id;
+        return $pembayaran->id_pelanggan == $users->id;
         } else {
           return false;
         }
