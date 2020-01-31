@@ -18,11 +18,11 @@ class PemesananController extends Controller
         'message' => 'You Are unauthorized'
       ], 403);
     }
-     
+
     if (Auth::user()->role === 'admin') {
       $pemesanan = Pemesanan::OrderBy("id", "DESC")->paginate(2)->toArray();
     } else {
-      $pemesanan = Pemesanan::Where(['id_pemesanan' => Auth::user()->id])->OrderBy("id", "DESC")->paginate(2)->toArray();
+      $pemesanan = Pemesanan::Where(['id_pelanggan' => Auth::user()->id])->OrderBy("id", "DESC")->paginate(2)->toArray();
     }
 
     $response = [
@@ -65,15 +65,15 @@ class PemesananController extends Controller
           'lama_inap' => 'required|numeric',
           'total' => 'required|numeric'
         ];
-        
+
         $validator = \Validator::make($input, $validationRules);
-        
+
         if ($validator->fails()) {
           return response()->json($validator->errors(), 400);
         }
           $pemesanan = Pemesanan::create($input);
         } else {
-       
+
         $input = $request->all();
         $validationRules = [
           'id_kamar' => 'required|numeric',
@@ -83,9 +83,9 @@ class PemesananController extends Controller
           'lama_inap' => 'required|numeric',
           'total' => 'required|numeric'
         ];
-       
+
         $validator = \Validator::make($input, $validationRules);
-        
+
         if ($validator->fails()) {
           return response()->json($validator->errors(), 400);
         }
@@ -108,7 +108,7 @@ class PemesananController extends Controller
     *@param int $id
     *@return \Illuminate\Http\Response
     */
-    
+
     public function show($id)
     {
       $pemesanan = Pemesanan::find($id);
@@ -116,7 +116,7 @@ class PemesananController extends Controller
           abort(404);
         }
 
-        if (Gate::denies('update-pelanggan', $pemesanan)) {
+        if (Gate::denies('show_pemesanan', $pemesanan)) {
           return response()->json([
             'success' => false,
             'status' => 403,
@@ -161,11 +161,11 @@ class PemesananController extends Controller
       ];
 
       $validator = \Validator::make($input, $validationRules);
-      
+
       if($validator->fails()) {
         return response()->json($validator->errors(), 400);
       }
-         
+
         $pemesanan->fill($input);
         $pemesanan->save();
 
@@ -187,7 +187,7 @@ class PemesananController extends Controller
         abort(404);
       }
 
-      if (Gate::denies('update-pemesana', $pemesanan)) {
+      if (Gate::denies('update-pemesanan', $pemesanan)) {
         return response()->json([
           'success' => false,
           'status' => 403,

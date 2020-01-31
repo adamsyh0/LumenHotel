@@ -9,19 +9,19 @@ use Illuminate\Support\Facades\Gate;
 
 class KamarController extends Controller
 {
-  public function index(Request $request)   
-  {   
-    $kamar = Kamar::OrderBy("id", "DESC")->paginate(2)->toArray();  
-    $response = [  
-      "total_count" => $kamar["total"],  
-      "limit" => $kamar["per_page"],  
-      "pagination" => [  
-      "next_page" => $kamar["next_page_url"],  
-      "current_page" => $kamar["current_page"]  
-    ],  
-      "data" => $kamar["data"],  
-    ];  
-      return response()->json($response,200);  
+  public function index(Request $request)
+  {
+    $kamar = Kamar::OrderBy("id", "DESC")->paginate(2)->toArray();
+    $response = [
+      "total_count" => $kamar["total"],
+      "limit" => $kamar["per_page"],
+      "pagination" => [
+      "next_page" => $kamar["next_page_url"],
+      "current_page" => $kamar["current_page"]
+    ],
+      "data" => $kamar["data"],
+    ];
+      return response()->json($response,200);
   }
 
  	/**
@@ -30,7 +30,7 @@ class KamarController extends Controller
    * @param \Illuminate\Http\Request $request
    * @return \Illuminate\Http\Respons
    */
-    
+
   public function store(Request $request)
   {
     if (Gate::denies('create-kamar')) {
@@ -40,22 +40,22 @@ class KamarController extends Controller
         'message' => 'You Are unauthorized'
       ], 403);
     }
-       
+
     $input = $request->all();
     $validationRules = [
       'jenis' => 'required|min:5',
       'info_kamar' => 'required|min:5',
       'harga' => 'required|numeric'
     ];
-       
+
     $validator = \Validator::make($input, $validationRules);
-       
+
     if ($validator->fails()) {
       return response()->json($validator->errors(), 400);
     }
-      
+
     $kamar = kamar::create($input);
-    
+
     return response()->json($kamar, 200);
   }
 
@@ -65,11 +65,11 @@ class KamarController extends Controller
 	 * @param int $id
 	 * @return \Illuminate\Http\Response
 	 */
-	  
+
   public function show($id)
 	{
 	  $kamar = Kamar::find($id);
-	  
+
     if(!$kamar) {
 	    abort(404);
 	  }
@@ -93,7 +93,7 @@ class KamarController extends Controller
         'message' => 'You Are unauthorized'
       ], 403);
     }
-	    
+
     $input = $request->all();
 	  $kamar = Kamar::find($id);
 
@@ -108,11 +108,11 @@ class KamarController extends Controller
     ];
 
     $validator = \Validator::make($input, $validationRules);
-      
+
     if($validator->fails()) {
       return response()->json($validator->errors(), 400);
     }
-	    
+
     $kamar->fill($input);
 	  $kamar->save();
 
@@ -133,15 +133,15 @@ class KamarController extends Controller
 	  if(!$kamar) {
 	    abort(404);
 	  }
-      
-    if (Gate::denies('update-kamar', $kamar)) {
+
+    if (Gate::denies('delete-kamar', $kamar)) {
       return response()->json([
         'success' => false,
         'status' => 403,
         'message' => 'You Are unauthorized'
       ], 403);
     }
-	 
+
     $kamar->delete();
 	  $message =['message' => 'deleted succesfully', 'kamar_id' => $id];
 

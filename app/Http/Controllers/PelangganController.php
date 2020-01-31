@@ -19,7 +19,7 @@ class PelangganController extends Controller
           'message' => 'You Are unauthorized'
         ], 403);
       }
-      
+
       if (Auth::user()->role === 'admin') {
         $pelanggan = Pelanggan::OrderBy("id", "DESC")->paginate(2)->toArray();
       } else {
@@ -54,7 +54,7 @@ class PelangganController extends Controller
           'message' => 'You Are unauthorized'
         ], 403);
       }
-             
+
       if (Auth::user()->role === 'admin') {
         $input = $request->all();
         $validationRules = [
@@ -66,9 +66,9 @@ class PelangganController extends Controller
           'alamat' => 'required|min:5',
           'id_pelanggan' => 'required|unique:users,id'
         ];
-               
+
         $validator = \Validator::make($input, $validationRules);
-        
+
         if ($validator->fails()) {
           return response()->json($validator->errors(), 400);
         }
@@ -83,9 +83,9 @@ class PelangganController extends Controller
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'alamat' => 'required|min:5'
           ];
-          
+
           $validator = \Validator::make($input, $validationRules);
-          
+
           if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
           }
@@ -112,12 +112,12 @@ class PelangganController extends Controller
     public function show($id)
     {
       $pelanggan = Pelanggan::find($id);
-          
+
       if(!$pelanggan) {
         abort(404);
       }
 
-      if (Gate::denies('update-pelanggan', $pelanggan)) {
+      if (Gate::denies('show-pelanggan', $pelanggan)) {
         return response()->json([
           'success' => false,
           'status' => 403,
@@ -143,7 +143,7 @@ class PelangganController extends Controller
       if(!$pelanggan) {
         abort(404);
       }
-            
+
       if (Gate::denies('update-pelanggan', $pelanggan)) {
         return response()->json([
           'success' => false,
@@ -151,7 +151,7 @@ class PelangganController extends Controller
           'message' => 'You Are unauthorized'
         ], 403);
       }
-            
+
       $validationRules = [
         'nama' => 'required|min:5',
         'nik' => 'required|min:16',
@@ -162,17 +162,17 @@ class PelangganController extends Controller
       ];
 
       $validator = \Validator::make($input, $validationRules);
-        
+
       if($validator->fails()) {
         return response()->json($validator->errors(), 400);
       }
-              
+
       $pelanggan->fill($input);
       $pelanggan->save();
 
       return response()->json($pelanggan,200);
     }
- 	
+
   /**
  	* Remove the specified resource from storage
  	*
@@ -188,14 +188,14 @@ class PelangganController extends Controller
    		abort(404);
   	}
 
-    if (Gate::denies('update-pelanggan', $pelanggan)) {
+    if (Gate::denies('delete-pelanggan', $pelanggan)) {
       return response()->json([
         'success' => false,
         'status' => 403,
         'message' => 'You Are unauthorized'
       ], 403);
     }
-  		
+
     $pelanggan->delete();
   	$message =['message' => 'deleted succesfully', 'pelanggan_id' => $id];
 

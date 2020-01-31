@@ -44,7 +44,7 @@ class UsersController extends Controller
        * @param \Illuminate\Http\Request $request
        * @return \Illuminate\Http\Respons
        */
-      
+
       public function store(Request $request)
       {
         if (Gate::denies('create-users')) {
@@ -54,7 +54,7 @@ class UsersController extends Controller
             'message' => 'You Are unauthorized'
           ], 403);
         }
-           
+
           $this->validate($request, [
             'nama' => 'required|string',
             'email' => 'required|email|unique:users',
@@ -62,20 +62,20 @@ class UsersController extends Controller
           ]);
 
           $input = $request->all();
-           
+
           //validation
           $validationRules = [
             'nama' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
           ];
-           
+
           $validator = \Validator::make($input, $validationRules);
-           
+
           if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
           }
-           
+
           //create user
           $users = new Users;
           $users->nama = $request->input('nama');
@@ -83,7 +83,7 @@ class UsersController extends Controller
           $plainPassword = $request->input('password');
           $users->password = app('hash')->make($plainPassword);
           $users->save();
-           
+
           return response()->json($users, 200);
       }
 
@@ -120,7 +120,7 @@ class UsersController extends Controller
       ];
 
       $validator = \Validator::make($input, $validationRules);
-     
+
       if ($validator->fails()) {
         return response()->json($validator->errors(), 400);
       }
@@ -147,15 +147,15 @@ class UsersController extends Controller
 	  if(!$users) {
 	     abort(404);
 	   }
-      
-    if (Gate::denies('update-users', $users)) {
+
+    if (Gate::denies('delete-users', $users)) {
       return response()->json([
         'success' => false,
         'status' => 403,
         'message' => 'You Are unauthorized'
       ], 403);
     }
-	        
+
       $users->delete();
 	    $message =['message' => 'deleted succesfully', 'users_id' => $id];
 
