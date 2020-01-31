@@ -187,7 +187,7 @@ class PemesananController extends Controller
         abort(404);
       }
 
-      if (Gate::denies('update-pemesanan', $pemesanan)) {
+      if (Gate::denies('delete-pemesanan', $pemesanan)) {
         return response()->json([
           'success' => false,
           'status' => 403,

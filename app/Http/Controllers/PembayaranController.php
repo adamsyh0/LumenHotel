@@ -91,7 +91,7 @@ class PembayaranController extends Controller
 	     abort(404);
 	  }
 
-    if (Gate::denies('update-pembayaran', $pembayaran)) {
+    if (Gate::denies('show-pembayaran', $pembayaran)) {
       return response()->json([
         'success' => false,
         'status' => 403,
@@ -163,7 +163,7 @@ class PembayaranController extends Controller
 	    abort(404);
 	  }
 
-    if (Gate::denies('update-pembayan', $pembayaran)) {
+    if (Gate::denies('update-pembayaran', $pembayaran)) {
       return response()->json([
         'success' => false,
         'status' => 403,
